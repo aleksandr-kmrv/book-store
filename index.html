@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+
+  <button onclick="loadbooksList()" id="button1">Получить информацию о книгах</button>
+
+  <ul id="list"></ul>
+  
+   <button onclick="loadbook()" id="button2">Получить информацию о книге №1</button>
+
+<script>
+function loadbooksList() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'books.json', true);
+  xhr.send();
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState != 4) return;
+    button1.parentNode.removeChild(button1);
+    if (xhr.status != 200) {
+      // обработать ошибку
+      alert( xhr.status + ': ' + xhr.statusText );
+    } else {
+      try {
+        var booksList = JSON.parse(xhr.responseText);
+      } catch (e) {
+        alert( "Некорректный ответ " + e.message );
+      }
+      showBooks(booksList);
+    }
+  }
+  button.innerHTML = 'Загружаю...';
+  button.disabled = true;
+}
+
+function showBooks(booksList) {
+ for (var i=0; i < booksList.books.length; i++) {
+   for (var key in booksList.books[i]) {
+   document.write( key + ": " + booksList.books[i][key]  + '<br>' );
+   }
+ }
+}
+
+function loadbook() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'books.json', true);
+  xhr.send();
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState != 4) return;
+    button2.parentNode.removeChild(button2);
+    if (xhr.status != 200) {
+      // обработать ошибку
+      alert( xhr.status + ': ' + xhr.statusText );
+    } else {
+      try {
+        var booksList = JSON.parse(xhr.responseText);
+      } catch (e) {
+        alert( "Некорректный ответ " + e.message );
+      }
+      showBook(booksList);
+    }
+  }
+  button.innerHTML = 'Загружаю...';
+  button.disabled = true;
+}
+
+function showBook(booksList) {
+  for (var key in booksList.books[0]) {
+  document.write( key + ": " + booksList.books[0][key]  + '<br>' );
+  }
+}
+
+ </script>
+
+</body>
+
+</html>
